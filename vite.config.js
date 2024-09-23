@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      '/development': {
-        target: 'https://free-ap-south-1.cosmocloud.io/development/api', 
+      '/api': {
+        target: 'https://free-ap-south-1.cosmocloud.io/development', 
         changeOrigin: true,
        },
     },

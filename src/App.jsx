@@ -1,10 +1,11 @@
 import './App.css'
+import Signup from './components/Auth/Signup.jsx'
 
 function App() {
 
   return (
     <div>
-      Hello world!!
+    <Signup/>
     </div>
   )
 }
