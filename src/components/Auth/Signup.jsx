@@ -12,6 +12,7 @@ export default function SignupPage() {
   const [hoveredCell, setHoveredCell] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [role, setRole] = useState('');
 
   const handleMouseEnter = useCallback((index) => {
     setHoveredCell(index);
@@ -167,30 +168,42 @@ export default function SignupPage() {
                   <div className="w-full flex-shrink-0 space-y-4 px-4">
                     <div>
                       <label className="block mb-2">Role</label>
-                      <select {...register("role", { required: true })} className="w-full p-2 bg-gray-700 rounded-xl">
+                      <select {...register("role", { required: true })} className="w-full p-2 bg-gray-700 rounded-xl" onChange={(e)=>setRole(e.target.value)}>
                         <option value="">Select a role</option>
-                        <option value="hired">Hired</option>
-                        <option value="toHire">To Hire</option>
+                        <option value="user">Hire Worker</option>
+                        <option value="worker">Become Worker</option>
                       </select>
                     </div>
+                    {
+                      role === "worker" && (
+                      <InputComponent
+                      {...register("designation", { required: true })}
+                      label="Designation"
+                      className="w-full p-2"
+                      placeholder="eg: Plumber, Electrician, Student etc."
+                      />
+                      )
+                    }
                     <InputComponent
                       {...register("address", { required: true })}
                       label="Address"
                       className="w-full p-2"
                       placeholder="Enter your address"
                     />
+                    <div className='flex space-x-4'>
                     <InputComponent
                       {...register("state", { required: true })}
                       label="State"
                       className="w-full p-2"
-                      placeholder="Enter your state"
+                      placeholder="State"
                     />
                     <InputComponent
                       {...register("pincode", { required: true, pattern: /^\d{6}$/ })}
                       label="Pin Code"
                       className="w-full p-2"
-                      placeholder="Enter 6-digit pin code"
+                      placeholder="Pin code"
                     />
+                    </div>
                     <div className="flex space-x-4">
                       <button type="button" onClick={prevSlide} className="w-1/2 bg-gray-600 p-2 rounded-xl hover:bg-gray-700 transition">Previous</button>
                       <button 

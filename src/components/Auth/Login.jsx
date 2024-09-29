@@ -1,8 +1,12 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import InputComponent from '../helper/Input'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { api } from '../../api.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../store/authSlice.js';
+import { logout } from '../../store/authSlice.js';
+
 
 
 function Login() {
@@ -10,34 +14,40 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.userData);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  useEffect(() => {
+    if(currentUser){
+      navigate('/')
+    }else{
+      dispatch(logout())
+    }
+  }, [currentUser, navigate])
+ 
   const onSubmit = async(data) => {
     try {
-      setError(''); // Clear any previous errors
+      setError(''); 
       
-      // Make the API call
       const response = await api.post('/api/user/login', {
         email: data.email,
         password: data.password
       });
 
-      // Check if the response is valid
       if (response.status === 200 && response.data) {
         console.log('Login successful:', response.data);
         
-        // Store the token in localStorage (or use a more secure method in production)
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
         }
 
-        // Redirect to dashboard or home page
-        navigate('/dashboard');
+        dispatch(login(response.data));
+        navigate('/');
       } else {
-        // Unexpected response
         console.error('Unexpected response:', response);
         setError('An unexpected error occurred. Please try again.');
       }
@@ -53,10 +63,8 @@ function Login() {
           setError('An error occurred. Please try again.');
         }
       } else if (error.request) {
-        // The request was made but no response was received
         setError('No response from server. Please check your internet connection.');
       } else {
-        // Something happened in setting up the request that triggered an Error
         setError('An unexpected error occurred. Please try again.');
       }
     }
@@ -79,9 +87,8 @@ function Login() {
         {/* Main content */}
         <div className="relative z-10 flex items-center justify-center h-screen pointer-events-none">
           <div className="w-[80%] h-[82%] bg-gray-800 bg-opacity-80 rounded-xl shadow-lg flex pointer-events-auto">
-            <div className="w-1/2 p-6 bg-purple-700 rounded-xl">
-              <h2 className="text-3xl font-bold mb-2">AMU</h2>
-              <img src="/api/placeholder/600/400" alt="Desert landscape" className="rounded-lg mb-4" />
+            <div className="w-1/2 p-6 bg-purple-700 rounded-xl flex flex-col justify-between">
+              <h2 className="text-3xl font-bold mb-2">LocalHire</h2>
               <h3 className="text-2xl font-semibold mb-4">Welcome Back,<br />Let's Continue Your Journey</h3>
             </div>
             <div className="w-[calc(50%-15rem)] p-6 flex flex-col mx-auto">
