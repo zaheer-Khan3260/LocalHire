@@ -45,7 +45,16 @@ function Login() {
           localStorage.setItem('token', response.data.token);
         }
 
-        dispatch(login(response.data));
+        const userData = {
+          id: response.data.id,
+          name: response.data.name,
+          email: response.data.email,
+          role: response.data.role,
+          location: response.data.location,
+          profile: response.data.profile,
+        }
+
+        dispatch(login(userData));
         navigate('/');
       } else {
         console.error('Unexpected response:', response);
@@ -57,8 +66,8 @@ function Login() {
       if (error.response) {
         if (error.response.status === 401) {
           setError('Invalid email or password. Please try again.');
-        } else if (error.response.data && error.response.data.message) {
-          setError(error.response.data.message);
+        } else if (error.response.data) {
+          setError(error.response.data);
         } else {
           setError('An error occurred. Please try again.');
         }

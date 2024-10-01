@@ -5,8 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import ProtectedLayer from './components/helper/ProtectedLayer.jsx'
-import {store, persistor} from './store/store.js'
-import { PersistGate } from 'redux-persist/integration/react';
+import {store} from './store/store.js'
 import Login from './components/Auth/Login.jsx'
 import Signup from './components/Auth/Signup.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
@@ -50,9 +49,8 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
     <RouterProvider router={router}/>
-    </PersistGate>
+    
     </Provider>
   </StrictMode>,
 )

@@ -12,7 +12,7 @@ const WorkerCard = () => {
   const randomHourlyRate = hourlyRates[Math.floor(Math.random() * hourlyRates.length)];
 
   return (
-    <div className="bg-[rgba(14,20,33,0.7)] rounded-lg shadow-lg overflow-hidden w-[25rem] mx-auto transition-transform duration-300 hover:scale-105">
+    <div className="bg-[rgba(14,20,33,0.7)] rounded-lg shadow-lg overflow-hidden w-[28rem] mx-auto">
       <div className="relative">
         <img className="w-full h-56 object-cover" src={`https://source.unsplash.com/random/400x300?${randomProfession.toLowerCase()}`} alt={randomProfession} />
         <div className="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg">
@@ -36,9 +36,14 @@ const WorkerCard = () => {
             <FaClock className="text-blue-500 mr-2" />
             <p className="text-sm text-gray-300">Available Now</p>
           </div>
-          <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-            Hire Now
-          </button>
+          <div className="flex space-x-2">
+            <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+              Hire Now
+            </button>
+            <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              View Profile
+            </button>
+          </div>
         </div>
       </div>
     </div>

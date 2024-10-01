@@ -1,21 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import authSlice from "./authSlice";
+import { saveState, loadState } from "../utils/cookieStorage.js"; // Ensure the path is correct
 
-const persistConfig = {
-    key: 'root',
-    storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, authSlice);
+// Load the state from cookies
+const preloadedState = loadState();
 
 const store = configureStore({
     reducer: {
-        auth: persistedReducer,
+        auth: authSlice,
     },
+    preloadedState, // Set the preloaded state
 });
 
-const persistor = persistStore(store);
+// Save the state to cookies before the page unloads
+window.addEventListener("beforeunload", () => {
+    saveState(store.getState());
+});
 
-export { store, persistor };
+export { store };
