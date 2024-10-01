@@ -41,7 +41,8 @@ export default function SignupPage() {
           address: data.address,
           state: data.state,
           pincode: data.pincode
-        }
+        },
+        designation: data.designation
       };
 
       console.log("Submitting data:", formattedData);
@@ -89,6 +90,12 @@ export default function SignupPage() {
   };
 
   return (
+
+
+
+// TODO: Adding the popup the Show the message to the user that the account is created successfully
+
+
     <div className="h-screen bg-gray-900 text-white relative">
       {/* Grid background */}
       <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 gap-2 p-1 overflow-hidden">

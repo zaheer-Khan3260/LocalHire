@@ -39,7 +39,6 @@ function Login() {
       });
 
       if (response.status === 200 && response.data) {
-        console.log('Login successful:', response.data);
         
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
@@ -52,6 +51,7 @@ function Login() {
           role: response.data.role,
           location: response.data.location,
           profile: response.data.profile,
+          designation: response.data.designation
         }
 
         dispatch(login(userData));
