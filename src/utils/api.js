@@ -7,4 +7,9 @@ export const api = axios.create({
         environmentid: import.meta.env.VITE_COSMOCLOUD_ENVIRONMENT_ID
     },
     withCredentials: true
-});
+})
+
+export const messageApi = axios.create({
+    baseURL: import.meta.env.VITE_MESSAGE_API_URL,
+    withCredentials: true
+})

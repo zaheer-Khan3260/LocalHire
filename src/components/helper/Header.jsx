@@ -1,17 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { FaSearch, FaBell, FaEnvelope, FaUser, FaChevronDown, FaCheckCircle, FaUserCircle } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../store/authSlice.js';
-
+import React from 'react';
+import { FaSearch } from 'react-icons/fa';
 const Header = () => {
-  const dispatch = useDispatch();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const currentUser = useSelector((state) => state.auth.userData);
-
-
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
     <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 shadow-lg">

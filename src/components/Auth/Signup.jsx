@@ -2,7 +2,7 @@ import React, { useState, useCallback,useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import InputComponent from "../helper/Input.jsx"
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../api.js';
+import { api } from '../../utils/api.js';
 
 export default function SignupPage() {
   const navigate = useNavigate();

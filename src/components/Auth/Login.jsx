@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import InputComponent from '../helper/Input'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { api } from '../../api.js';
+import { api } from '../../utils/api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/authSlice.js';
 import { logout } from '../../store/authSlice.js';
@@ -45,7 +45,7 @@ function Login() {
         }
 
         const userData = {
-          id: response.data.id,
+          id: response.data._id,
           name: response.data.name,
           email: response.data.email,
           role: response.data.role,

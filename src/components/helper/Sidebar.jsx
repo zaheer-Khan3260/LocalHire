@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../store/authSlice';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { remove } from '../../store/ConversationSlice';
 
 export const analyzeProfileProgress = (profileData) => {
   let progress = 0;
@@ -105,6 +106,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    dispatch(remove());
     navigate('/login');
   };
 
@@ -119,19 +121,24 @@ const Sidebar = () => {
             <img src={defaultProfileImage} alt="logo" className='w-28 h-28 rounded-full object-fill' />
           </div>
 
-          <div className='mt-6'>
+          <div className='my-6 border-b-2 border-gray-700 pb-8'>
             <div className='text-xl font-semibold flex items-center'>
               <h2 className='mr-2'>{userData.name}</h2>
-              <div className='text-green-500'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check">
-                <circle cx="12" cy="12" r="10"/>
-                <path d="m9 12 2 2 4-4"/>
-              </svg>
-              </div>
+              {
+                userData.is_verified && (
+                  <div className='text-green-500'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                  </div>
+                )
+
+              }
             </div>
             <p className='text-gray-400'>{userData?.designation}</p>
           </div>
-          { progressBar < 100 && (
+          { progressBar < 100 && userData?.role === "worker" && (
           <div className="mt-6">
             <div className="flex justify-between items-center mb-2">
               <Link to="/profile">
@@ -153,7 +160,7 @@ const Sidebar = () => {
 
       <nav>
         <ul className="space-y-2">
-          <li>
+          <li onClick={() => dispatch(remove())}>
             <Link to="/" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
               <FaHome />
@@ -167,13 +174,17 @@ const Sidebar = () => {
               <span>Profile</span>
             </Link>
           </li>
-          <li>
+          {
+            userData?.role === "worker" && (
+              <li>
             <Link to="/jobs" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
               <FaBriefcase />
               <span>Jobs</span>
-            </Link>
-          </li>
+                </Link>
+              </li>
+            )
+          }
           <li>
             <Link to="/messages" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
@@ -188,15 +199,13 @@ const Sidebar = () => {
               <span>Settings</span>
             </Link>
           </li>
-          <li>
-            <button onClick={handleLogout} className="w-full flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
+        </ul>
+      </nav>
+      <button onClick={handleLogout} className="w-full flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
               <FaSignOutAlt />
               <span>Logout</span>
             </button>
-          </li>
-        </ul>
-      </nav>
     </>
     )
 }
