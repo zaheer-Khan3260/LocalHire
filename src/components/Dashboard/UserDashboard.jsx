@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import WorkerCard from '../helper/WorkerCard'
+import WorkerCard from '../helper/WorkerCard.jsx'
 import { api } from '../../utils/api.js'
 
 
