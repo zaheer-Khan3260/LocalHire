@@ -12,7 +12,7 @@ const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage }) =>
     <div className="max-h-[41.5rem] overflow-y-auto scrollbar-hidden w-full">
       <div className="flex flex-col gap-3 mx-3 p-4">
         {workCards.length > 0 ? (
-          workCards.map((card, index) => <WorkCard key={index} {...card} />)
+          workCards.map((card, index) => <WorkCard key={index} {...card}  />)
         ) : (
           <p className="text-gray-500 text-center">{emptyMessage}</p>
         )}
@@ -23,28 +23,36 @@ const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage }) =>
 
 // Main component using the reusable WorkColumn component
 const WorkerDashboard = () => {
-  const todoWork = [
-   
+  const waitingForApproval = [
+  
   ];
   const inProgressWork = [
     
   ]; 
   const completedWork = [
+    {
+      name: "Zaheer khan",
+      number: 8076904348,
+      email: "zaheer@gmail.com",
+      price: 1599,
+      status: "Completed"
+     }
   ];
   const userData = useFetchCurrentUserData()
 
 
-  const isWorkAvailable = todoWork.length > 0 && completedWork.length > 0 && inProgressWork.length > 0 ? true : false;
+  const isWorkAvailable = waitingForApproval.length > 0 || completedWork.length > 0 || inProgressWork.length > 0 ? true : false;
 
   return (
-    <div className="border-2 w-full border-gray-500 h-full p-2 rounded-xl flex justify-center items-center gap-2 mt-9 ml-3">
+    <div className={`border-2 w-full border-gray-500 h-[calc(100vh - 8rem)] p-2 rounded-xl flex
+     ${!isWorkAvailable ? "justify-center items-center" : "justify-start"} gap-2 mt-9 ml-3`}>
       
       {
         isWorkAvailable ? (
           <div className="flex justify-between">
       <WorkColumn
-        title="To Do"
-        workCards={todoWork}
+        title="Waiting For Approval"
+        workCards={waitingForApproval}
         bgColor="bg-red-500"
         borderColor="border-red-500"
         emptyMessage="No work in To Do"

@@ -111,7 +111,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-[rgba(14,20,33,0.7)] text-white  rounded-2xl h-full w-[20rem] px-4 pt-10">
+    <div className="bg-primaryCardColor text-white  rounded-2xl h-full w-[20rem] px-4 pt-10">
 
       {
         userData && (

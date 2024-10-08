@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primaryCardColor: 'rgba(14,20,33,0.7)',
+      }
+    },
   },
   plugins: [],
 }

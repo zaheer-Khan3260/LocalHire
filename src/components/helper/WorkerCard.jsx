@@ -2,11 +2,15 @@ import React from 'react';
 import { FaMapMarkerAlt, FaClock, FaTools, FaRupeeSign } from 'react-icons/fa';
 import userImage from "../../Icons/profile.jpeg"
 
+
+
+
 const WorkerCard = ({
   name,
   location,
   image,
-  designation
+  designation,
+  onClick
 }) => {
 
   const rating = 3.5;
@@ -66,7 +70,7 @@ const WorkerCard = ({
             <p className="text-sm text-gray-300">Available Now</p>
           </div>
           <div className="flex space-x-2">
-            <button className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+            <button onClick={onClick} className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50">
               Hire Now
             </button>
             <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">

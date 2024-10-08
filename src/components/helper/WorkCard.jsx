@@ -3,9 +3,9 @@ import defaultImage from "../../Icons/profile.jpeg";
 
 function WorkCard(data) {
   return (
-    <div className='border-2 bg-[rgba(14,20,33,0.7)] border-[rgba(14,20,33,0.7)] shadow-xl transition-all duration-500 hover:scale-105 w-[25rem] rounded-xl p-3'>
+    <div className='border-2 bg-[rgba(14,20,33,0.7)] border-[rgba(14,20,33,0.7)] shadow-xl transition-scale duration-300 hover:scale-105 w-[25rem] rounded-xl p-3'>
       {/* Image and name container */}
-      <div className='w-full border-green-600 borde-2 h-20 flex gap-2'> 
+      <div className='w-full border-slate-600 border-b-2 h-24 flex gap-2  '> 
         <div className='w-20 h-20 rounded-full'>
           <img src={defaultImage} alt="" className='w-20 h-20 rounded-full' />
         </div>
@@ -15,19 +15,25 @@ function WorkCard(data) {
           <p className='text-sm text-gray-600'>{data?.email}</p>
         </div>
       </div>
+      {/* job discription container */}
+      <div className='w-full mt-3 text-sm '>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et mollitia impedit saepe fugit quisquam obcaecati minus dolor atque, 
+      </div>
       {/* others detail container */}
-
-      <div className=' w-full mt-5 p-2 flex justify-between items-center gap-4 '>
-        <div className='w-[70%] flex justify-center gap-3 text-center'>
-        <div className='border-gray-500 border-2 w-full px-4 py-1 rounded-2xl '>$ {data?.price}</div>
-        <div className={` w-full px-4 py-1 rounded-2xl ${
-          data?.status === "Todo" ? "bg-red-500" :
+      <div className=' w-full mt-8 flex justify-between items-center gap-2 cursor-pointer '>
+        <div className='w-[70%] flex gap-3 text-center'>
+        <div className='h-9 p-2 bg-slate-500 rounded-md '>Price: {data?.price}</div>
+        <div className={`h-9 p-2 rounded-md text-sm ${
+          data?.status === "Waiting For Approval" ? "bg-red-500" :
           data?.status === "In Progress" ? "bg-yellow-500" : "bg-green-500"
         }`}>{data?.status}</div>
 
         </div>
-        <div className='w-[30%] bg-blue-500 hover:bg-blue-700 duration-300 transition-all rounded-2xl px-3 py-2 text-center'>
-          <h4>View Job</h4>
+        <div className='w-[30%]'>
+          <h4 className={`bg-blue-500 hover:bg-blue-700 duration-300 transition-all rounded-md px-1 py-2 text-center ${data.status === "Completed" ? "hidden" : null}`}>{
+            data.status === "Waiting For Approval" ? "Accept" : "Done"
+            }</h4>
+          
         </div>
       </div>
       
