@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react'
 import ConversationUser from '../helper/ConversationUser.jsx'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router'
-import axios from 'axios'
-import { messageApi } from '../../utils/api.js'
+import { customServerApi } from '../../utils/api.js'
 
 function Messages() {
   const [conversationUser, setConversationUser] = useState([])
@@ -14,7 +13,7 @@ function Messages() {
   useEffect(() => {
     console.log("user: ",user)
     const fetchUsers = async () => {
-      const response = await messageApi.post(`/getConversation`, {senderId: user.id});
+      const response = await customServerApi.post(`/message/getConversation`, {senderId: user.id});
       if(response) {
         console.log("conversation response: ",response.data.data)
         setConversationUser(response.data.data);

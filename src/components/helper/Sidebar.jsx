@@ -118,12 +118,12 @@ const Sidebar = () => {
           <>
           <div className='mb-5 h-auto'>
           <div className='w-full h-full'>
-            <img src={defaultProfileImage} alt="logo" className='w-28 h-28 rounded-full object-fill' />
+            <img src={userData.profileImage? userData.profileImage : defaultProfileImage} alt="logo" className='w-28 h-28 rounded-full object-fill' />
           </div>
 
           <div className='my-6 border-b-2 border-gray-700 pb-8'>
             <div className='text-xl font-semibold flex items-center'>
-              <h2 className='mr-2'>{userData.name}</h2>
+              <h2 className='mx-2'>{userData.name}</h2>
               {
                 userData.is_verified && (
                   <div className='text-green-500'>

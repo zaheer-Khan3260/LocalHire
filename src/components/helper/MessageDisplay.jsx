@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { remove } from "../../store/ConversationSlice.js";
-import { api, messageApi } from "../../utils/api.js";
+import { api, customServerApi } from "../../utils/api.js";
 import { useSelector } from "react-redux";
 import {useSocketContext} from "../../utils/socketContext.jsx"
 import { MdDeleteOutline } from "react-icons/md";
@@ -26,7 +26,7 @@ function MessageDisplay() {
 
 
   const sendMessage = async () => {
-    const response = await messageApi.post("/sendMessage", {
+    const response = await customServerApi.post("/message/sendMessage", {
       senderId: userData.id,
       recieverId: reciever,
       message: inputMessage
@@ -39,7 +39,7 @@ function MessageDisplay() {
 
   const deleteMessage = async (messageId) => {
     try {
-      const response = await messageApi.post("/deleteMessage", {
+      const response = await customServerApi.post("/message/deleteMessage", {
         messageId,
         conversationId: id.id,
         senderId: userData.id,
@@ -57,7 +57,7 @@ function MessageDisplay() {
   useEffect(() => {
 
     const fetchConversation = async () => {
-      const response = await messageApi.post(`/getConversationById`, {conversationId: id.id})
+      const response = await customServerApi.post(`/message/getConversationById`, {conversationId: id.id})
       if(response) {
         setMessages(response.data.data.messages)
         if(response.data.data.conversationBetween.length === 2) {

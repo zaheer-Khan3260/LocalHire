@@ -16,7 +16,6 @@ export const SocketContextProvider = ({children}) => {
     const [onlineUser, setOnlineUser] = useState([])
 
     const userData = useSelector((state) => state.auth.userData)
-    console.log( "userData: ",userData)
 
     useEffect(() => {
         if(userData) {

@@ -8,7 +8,7 @@ import userImage from "../../Icons/profile.jpeg"
 const WorkerCard = ({
   name,
   location,
-  image,
+  profileImage,
   designation,
   onClick
 }) => {
@@ -18,7 +18,7 @@ const WorkerCard = ({
   return (
     <div className="bg-[rgba(14,20,33,0.7)] h-auto rounded-lg shadow-lg overflow-hidden w-[28rem] mx-auto cursor-pointer">
       <div className="relative">
-        <img className="w-full h-56 object-cover" src={image ? image : userImage} alt={designation} />
+        <img className="w-full h-56 object-cover" src={profileImage ? profileImage : userImage} alt={designation} />
         <div className="absolute top-0 right-0 bg-purple-600 text-white px-3 py-1 rounded-bl-lg">
           <p className="text-sm font-semibold">{designation}</p>
         </div>

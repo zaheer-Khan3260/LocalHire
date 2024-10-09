@@ -51,7 +51,8 @@ function Login() {
           role: response.data.role,
           location: response.data.location,
           profile: response.data.profile,
-          designation: response.data.designation
+          designation: response.data.designation,
+          profileImage: response.data?.profileImage
         }
 
         dispatch(login(userData));

@@ -9,7 +9,7 @@ export const api = axios.create({
     withCredentials: true
 })
 
-export const messageApi = axios.create({
+export const customServerApi = axios.create({
     baseURL: import.meta.env.VITE_MESSAGE_API_URL,
     withCredentials: true
 })
