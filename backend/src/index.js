@@ -45,6 +45,9 @@ app.use(cookieParser());
 
 
 
-import messageRouter from "./routes/message.routes.js"
+import messageRouter from "./routes/message.routes.js";
+import jobRouter from "./routes/job.routes.js";
 
+
+app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/message", messageRouter)
