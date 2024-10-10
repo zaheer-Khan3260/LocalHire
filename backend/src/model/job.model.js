@@ -47,6 +47,10 @@ const jobSchema = new Schema({
     timing: {
         type: String,
         required: [true, "timing is required"]
+    },
+    profileImage: {
+        type: String,
+        required: [true, "Profile image is required"]
     }
 }, { timestamps: true });
 
