@@ -1,6 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import defaultImage from "../../Icons/profile.jpeg";
+import { customServerApi } from "../../utils/api";
+import useFetchCurrentUserData from "../../hooks/useFetchCurrentUserData";
+import { useNavigate } from "react-router";
 
 function JobForm({ _id, name, designation, profileImage, onClick }) {
   const {
@@ -9,10 +12,34 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
     watch,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate()
+  const userData = useFetchCurrentUserData();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission logic here
+
+  const onSubmit = async(data) => {
+    if(!data) return;
+
+    try {
+      const jobDetails = {
+        clientName : userData?.name,
+        clientEmail: userData?.email,
+        clientNumber: 8073904348,
+        status: "Waiting For Approval",
+        amount: data?.amount,
+        description: data?.description,
+        timing: data?.timing,
+        workerId: _id,
+        profileImage: userData?.profileImage
+      }
+      console.log("jobdetails: ", jobDetails);
+      const response = await customServerApi.post("/job/createJob", jobDetails)
+      if(response){
+        navigate("/")
+      }
+    } catch (error) {
+     console.log("An error while Hiring: ", error) 
+    }
+    
   };
 
   return (
@@ -55,7 +82,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
           Job Description:
         </label>
         <textarea
-          {...register("jobDescription", {
+          {...register("description", {
             required: "Job description is required",
             maxLength: 150,
           })}
@@ -76,7 +103,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
           </label>
           <input
             type="number"
-            {...register("price", { required: "Price is required", min: 0 })}
+            {...register("amount", { required: "Price is required", min: 0 })}
             placeholder="eg: 2000, 500"
             className="w-full p-2 border-2 border-gray-500 rounded-md bg-primaryCardColor"
           />

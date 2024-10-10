@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaHome, FaUser, FaBriefcase, FaEnvelope, FaCog } from 'react-icons/fa';
+import { FaHome, FaUser, FaEnvelope, FaBell } from 'react-icons/fa';
 import { MdOutlineChevronRight } from "react-icons/md";
 import defaultProfileImage from "../../Icons/profile.jpeg"
 import { useSelector } from 'react-redux';
@@ -174,17 +174,6 @@ const Sidebar = () => {
               <span>Profile</span>
             </Link>
           </li>
-          {
-            userData?.role === "worker" && (
-              <li>
-            <Link to="/jobs" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
-            transition-all duration-400 rounded-xl">
-              <FaBriefcase />
-              <span>Jobs</span>
-                </Link>
-              </li>
-            )
-          }
           <li>
             <Link to="/messages" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
@@ -193,10 +182,10 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/settings" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
+            <Link to="/notification" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105
             transition-all duration-400 rounded-xl">
-              <FaCog />
-              <span>Settings</span>
+              <FaBell />
+              <span>Notification</span>
             </Link>
           </li>
         </ul>
