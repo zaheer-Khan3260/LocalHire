@@ -22,6 +22,9 @@ const jobSchema = new Schema({
         min: [1000000000, 'Client number must be at least 10 digits'], // Example validation for phone number
         max: [9999999999, 'Client number must be at most 10 digits'], // Example validation for phone number
     },
+    clientId: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     status: {
         type: String,
         required: [true, 'Job status is required'],

@@ -3,7 +3,7 @@ import { Message } from "../model/message.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { getRecieverSocketId, io } from "../socket/socket.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 
 export const sendMessage = asyncHandler(async(req, res) => {
@@ -38,12 +38,12 @@ export const sendMessage = asyncHandler(async(req, res) => {
         await Promise.all([conversation.save(), newMessage.save()])
 
         // Emit the new message to both sender and receiver
-        const recieverSocketId = getRecieverSocketId(recieverId)
+        const recieverSocketId = getReceiverSocketId(recieverId)
         if(recieverSocketId){
             io.to(recieverSocketId).emit("newMessage", newMessage)
         }
         
-        const senderSocketId = getRecieverSocketId(senderId)
+        const senderSocketId = getReceiverSocketId(senderId)
         if(senderSocketId){
             io.to(senderSocketId).emit("newMessage", newMessage)
         }
@@ -151,8 +151,8 @@ export const deleteMessage = asyncHandler(async(req, res) => {
     });
 
     // Emit socket event for message deletion
-    const receiverSocketId = getRecieverSocketId(receiverId);
-    const senderSocketId = getRecieverSocketId(senderId);
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    const senderSocketId = getReceiverSocketId(senderId);
 
     if (receiverSocketId) {
         io.to(receiverSocketId).emit("messageDeleted", { messageId, conversationId });

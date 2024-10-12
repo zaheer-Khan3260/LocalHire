@@ -1,53 +1,56 @@
-import {Server} from "socket.io"
-import http from "http"
-import express from "express"
+import { Server } from "socket.io";
+import http from "http";
+import express from "express";
 
-const app = express()
-
-const server = http.createServer(app)
+const app = express();
+const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
         origin: [process.env.CORS_ORIGIN, "http://localhost:5173"],
         methods: ["GET", "POST"]
     }
-})
+});
 
-const userSocketMap = {};
+const userSocketMap = new Map();
 
 io.on("connection", (socket) => {
-    // console.log("socket connected ID:", socket.id)
+    console.log("Socket connected ID:", socket.id);
     const userId = socket.handshake.query.userId;
-    if(userId !== undefined) userSocketMap[userId] = socket.id;
-
-    // io.emit is used to send a message to all connected clients
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    if (userId) {
+        userSocketMap.set(userId, socket.id);
+        io.emit("getOnlineUsers", Array.from(userSocketMap.keys()));
+    }
 
     socket.on("disconnect", () => {
-        // console.log("socket disconnected ID:", socket.id)
-
-        const disconnectedUser = Object.keys(userSocketMap)
-        .find(key => userSocketMap[key] === socket.id)
-        if(disconnectedUser){
-        delete userSocketMap[disconnectedUser];
-        io.emit("getOnlineUsers", Object.keys(userSocketMap));
+        console.log("Socket disconnected ID:", socket.id);
+        for (const [key, value] of userSocketMap.entries()) {
+            if (value === socket.id) {
+                userSocketMap.delete(key);
+                break;
+            }
         }
+        io.emit("getOnlineUsers", Array.from(userSocketMap.keys()));
     });
 
-    // Add this event listener for sending messages
     socket.on("sendMessage", (messageData) => {
-        const receiverSocketId = userSocketMap[messageData.receiverId];
+        const receiverSocketId = userSocketMap.get(messageData.receiverId);
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", messageData);
         }
     });
 
-    // Add this event listener for deleting messages
+    socket.on("notification", (newNotification) => {
+        const receiverSocketId = userSocketMap.get(newNotification.workerId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("notification", newNotification);
+        }
+    });
+
     socket.on("deleteMessage", (data) => {
         const { messageId, conversationId, senderId, receiverId } = data;
-        const receiverSocketId = userSocketMap[receiverId];
-        const senderSocketId = userSocketMap[senderId];
+        const receiverSocketId = userSocketMap.get(receiverId);
+        const senderSocketId = userSocketMap.get(senderId);
 
-        // Notify both sender and receiver about the deleted message
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("messageDeleted", { messageId, conversationId });
         }
@@ -57,8 +60,6 @@ io.on("connection", (socket) => {
     });
 });
 
-export const getRecieverSocketId = (recieverId) => {
-    return userSocketMap[recieverId];
-}
+export const getReceiverSocketId = (receiverId) => userSocketMap.get(receiverId);
 
-export {app, io, server}
+export { app, io, server };
