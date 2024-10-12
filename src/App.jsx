@@ -13,7 +13,7 @@ function App() {
       </div>
       <div className='flex'>
 
-        <div className='w-[30.5rem] h-[calc(100vh-5rem)] sticky top-[5rem] pl-[10rem] py-[2rem]'>
+        <div className='w-[30.5rem] h-[calc(100vh-5rem)] sticky top-[5rem] pl-[1rem] lg:pl-[10rem] py-[2rem]'>
           <Sidebar/>
         </div>
         

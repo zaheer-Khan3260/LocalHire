@@ -3,9 +3,39 @@ import WorkCard from "../helper/WorkCard";
 import useFetchCurrentUserData from "../../hooks/useFetchCurrentUserData";
 import { Link } from "react-router-dom";
 import { customServerApi } from "../../utils/api.js";
+import MessageForm from "../helper/MessageForm.jsx";
+import { useSocketContext } from "../../utils/socketContext.jsx";
+
 
 // Create a reusable WorkColumn component for better maintainability
-const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage, onJobStatusUpdate, isLoading }) => (
+const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage, onJobStatusUpdate, isLoading }) => {
+
+  const[messageClickedUserData, setMessageClickedUserData] = useState();
+  const [messageFormActive,setMessageFormActive] = useState(false)
+
+  const handleOnClick =(_id, name, profileImage) => {
+    setMessageClickedUserData({
+      _id,
+      name,
+      profileImage
+    })
+  }
+
+
+  useEffect(() => {
+    if(messageClickedUserData?.name){
+      setMessageFormActive(true)
+    }
+  },[messageClickedUserData, setMessageClickedUserData])
+
+ return ( <>
+     <div className={`w-[89rem] z-50 absolute bottom-0 right-0 h-[52rem] bg-primaryCardColor backdrop-blur-lg
+         justify-center items-center ${messageFormActive ? "flex" : "hidden"}`}>
+         <MessageForm
+         {...messageClickedUserData} 
+         onClick= {() => setMessageFormActive(false)}
+         />
+      </div>
   <div className="w-[28rem] h-auto flex flex-col items-center">
     <div className={`px-24 py-3 my-5 text-center ${bgColor} border-2 ${borderColor} rounded-2xl font-semibold`}>
       {title}
@@ -15,11 +45,16 @@ const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage, onJo
         {isLoading ? (
           // Show loading skeletons if loading
           Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="animate-pulse bg-gray-200 h-24 rounded-lg shadow-md"></div>
+            <div key={index} className="animate-pulse bg-gray-500 h-24 bg-opacity-40 rounded-lg shadow-md"></div>
           ))
         ) : workCards.length > 0 ? (
           workCards.map((card, index) => (
-            <WorkCard key={index} data={card} onJobStatusUpdate={onJobStatusUpdate} />
+            <WorkCard 
+            key={index} 
+            data={card} 
+            onJobStatusUpdate={onJobStatusUpdate} 
+            onClick={() => handleOnClick(card.clientId, card.clientName, card.profileImage )} 
+            />
           ))
         ) : (
           <p className="text-gray-500 text-center">{emptyMessage}</p>
@@ -27,7 +62,9 @@ const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage, onJo
       </div>
     </div>
   </div>
-);
+  </>
+ )
+};
 
 // Main component using the reusable WorkColumn component
 const WorkerDashboard = () => {
@@ -36,6 +73,7 @@ const WorkerDashboard = () => {
   const [completedWork, setCompletedWork] = useState([]);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false); // Loading state
+  const {socket} = useSocketContext()
 
   const userData = useFetchCurrentUserData();
 
@@ -55,7 +93,7 @@ const WorkerDashboard = () => {
     if (userData) {
       fetchJobs();
     }
-  }, [userData]);
+  }, [userData, socket]);
 
   useEffect(() => {
     data.forEach(job => {
@@ -94,7 +132,7 @@ const WorkerDashboard = () => {
   return (
     <div className={`border-2 w-full border-gray-500 h-[calc(100vh - 8rem)] p-2 rounded-xl flex
      ${!isWorkAvailable ? "justify-center items-center" : "justify-start"} gap-2 mt-9 ml-3`}>
-      
+
       {isWorkAvailable ? (
         <div className="flex justify-between">
           <WorkColumn

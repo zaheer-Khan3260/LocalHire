@@ -2,7 +2,7 @@ import React from "react";
 import defaultImage from "../../Icons/profile.jpeg";
 import { customServerApi } from "../../utils/api.js";
 
-function WorkCard({ data, onJobStatusUpdate, isLoading }) {
+function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
   const acceptJob = async () => {
     if (!data._id) return;
     const response = await customServerApi.post(
@@ -54,7 +54,7 @@ function WorkCard({ data, onJobStatusUpdate, isLoading }) {
           <p className="text-sm text-gray-600">{data?.clientNumber}</p>
           <p className="text-sm text-gray-600">{data?.clientEmail}</p>
         </div>
-        <div className=" text-end h-fit mt-1 p-1 ml-28 cursor-pointer relative group">
+        <div className=" text-end h-fit mt-1 p-1 ml-28 cursor-pointer relative group" onClick={onClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="28"

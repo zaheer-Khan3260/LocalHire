@@ -18,8 +18,10 @@ function MessageDisplay() {
   const[reciever, setReciever] = useState(null)
   const [inputMessage, setInputMessage] = useState("")
   const [recieverData, setRecieverData] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const {socket} = useSocketContext()
   const lastMessageRef = useRef(null);
+  
 
   const userData = useSelector((state) => state.auth.userData)
   const id = useParams()
@@ -59,7 +61,9 @@ function MessageDisplay() {
     const fetchConversation = async () => {
       const response = await customServerApi.post(`/message/getConversationById`, {conversationId: id.id})
       if(response) {
+
         setMessages(response.data.data.messages)
+        console.log("message display respoinse: ", response.data.data)
         if(response.data.data.conversationBetween.length === 2) {
           setReciever(response.data.data.conversationBetween.find((user) => user !== userData.id))
         }
@@ -73,14 +77,15 @@ function MessageDisplay() {
       }
     }
 
-
+    setIsLoading(true)
     if(id.id) {
       fetchConversation()
     }
     if(reciever) {
       fetchRecieverData()
     }
-  }, [reciever])
+    setIsLoading(false)
+  }, [reciever, id.id])
  
 
   useEffect(() => {
@@ -122,7 +127,10 @@ function MessageDisplay() {
     }
   }, [messages, socket]);
 
+  
   return (
+    <>
+    <div className={`${isLoading ? "block" : "hidden"}`}>Loading......</div>
     <div className="flex flex-col h-screen">
       {/* Header */}
       <div className="bg-[rgba(14,20,33)] bg-opacity-100 shadow-sm p-4 flex justify-between items-center sticky top-0 overflow-hidden">  
@@ -258,7 +266,8 @@ function MessageDisplay() {
           </button>
         </div>
       </div>
-    </div>    
+    </div> 
+    </>   
   )
 }
 

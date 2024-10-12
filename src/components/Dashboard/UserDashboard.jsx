@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import WorkerCard from '../helper/WorkerCard.jsx'
 import { api } from '../../utils/api.js'
 import JobForm from '../helper/JobForm.jsx'
+import MessageForm from '../helper/MessageForm.jsx'
 
 function UserDashboard() {
   const [workers, setWorkers] = useState([])
   const [jobFormActive, setJobFormActive] = useState(false)
   const [clickedUserData, setClickedUserData] = useState()
+  const [messageFormActive, setMessageFormActive] = useState(false)
+  const [messageClickedUserData, setMessageClickedUserData] = useState()
 
   // Function to handle click event
   const handleClick = (_id,name, designation, profileImage) => {
@@ -18,6 +21,16 @@ function UserDashboard() {
     })
   };
 
+  const handleMessageClick = (_id, name, designation, profileImage) => {
+    setMessageClickedUserData({
+      _id,
+      name,
+      designation,
+      profileImage
+    })
+  }
+
+
 
   useEffect(() => {
     if(clickedUserData?.name){
@@ -25,13 +38,21 @@ function UserDashboard() {
     }
   },[clickedUserData, setClickedUserData])
   useEffect(() => {
+    if(messageClickedUserData?.name){
+      setMessageFormActive(true)
+    }
+  },[messageClickedUserData, setMessageClickedUserData])
+
+
+
+  useEffect(() => {
     const fetchWorkers = async () => {
       try {
         const response = await api.get(`/api/user`, {
-          role: "worker",
           params: {
             limit: 12,
-            offset: 0
+            offset: 0,
+            role: "worker"
           }
         });
         setWorkers(response.data.data);
@@ -52,6 +73,13 @@ function UserDashboard() {
           onClick= {() => setJobFormActive(false)}
           />
       </div>
+      <div className={`w-[89rem] z-50 absolute bottom-0 right-0 h-[52rem] bg-primaryCardColor backdrop-blur-lg
+         justify-center items-center ${messageFormActive ? "flex" : "hidden"}`}>
+         <MessageForm
+         {...messageClickedUserData} 
+         onClick= {() => setMessageFormActive(false)}
+         />
+      </div>
       <div className='w-full h-full pb-5 overflow-y-auto rounded-2xl flex flex-wrap gap-5 scrollbar-hidden'>
         {
           workers.filter((worker) => worker.role === 'worker').map((worker) => (
@@ -59,6 +87,7 @@ function UserDashboard() {
               key={worker._id} 
               {...worker} 
               onClick={() => handleClick(worker._id,worker?.name, worker?.designation, worker?.profileImage)}
+              handleMessageClick={() => handleMessageClick(worker._id,worker?.name, worker?.designation, worker?.profileImage)}
             />
           ))
         }

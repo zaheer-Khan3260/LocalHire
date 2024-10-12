@@ -24,6 +24,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
         clientName : userData?.name,
         clientEmail: userData?.email,
         clientNumber: 8073904348,
+        clientId: userData.id,
         status: "Waiting For Approval",
         amount: data?.amount,
         description: data?.description,
@@ -34,7 +35,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
       console.log("jobdetails: ", jobDetails);
       const response = await customServerApi.post("/job/createJob", jobDetails)
       if(response){
-        navigate("/")
+        document.querySelector('.closeButton').click();
       }
     } catch (error) {
      console.log("An error while Hiring: ", error) 
@@ -45,7 +46,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
   return (
     <div className="border-2 rounded-lg border-primaryCardColor w-[30rem] h-[38rem] bg-primaryCardColor p-4">
       <div
-        className=" cursor-pointer w-full flex justify-end"
+        className="closeButton cursor-pointer w-full flex justify-end"
         onClick={onClick}
       >
         <svg
@@ -94,7 +95,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
           <p className="text-red-500">{errors.jobDescription.message}</p>
         )}
         <div id="word-count" className="text-right text-gray-400 mt-1">
-          {watch("jobDescription")?.length || 0}/150
+          {watch("description")?.length || 0}/150
         </div>
 
         <div>
