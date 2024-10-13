@@ -87,10 +87,6 @@ const WorkerCard = ({
             <FaMapMarkerAlt className="text-red-500 mr-2" />
             <p className="text-gray-300">{location?.state}</p>
           </div>
-          <div className="flex items-center">
-            <FaRupeeSign className="text-green-500 mr-2" />
-            <p className="text-gray-300">450 per hour</p>
-          </div>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">

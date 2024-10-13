@@ -85,7 +85,9 @@ export default function SignupPage() {
           pincode: data.pincode
         },
         designation: data.designation ? data.designation : "",
-        profileImage: profileImageUrl
+        profileImage: profileImageUrl,
+        verified: false,
+        isAvailable: true
       };
 
       console.log("Submitting data:", formattedData);

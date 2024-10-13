@@ -45,14 +45,7 @@ function Login() {
         }
 
         const userData = {
-          id: response.data._id,
-          name: response.data.name,
-          email: response.data.email,
-          role: response.data.role,
-          location: response.data.location,
-          profile: response.data.profile,
-          designation: response.data.designation,
-          profileImage: response.data?.profileImage
+          ...Object.fromEntries(Object.entries(response.data).filter(([key]) => !['password'].includes(key)))
         }
 
         dispatch(login(userData));

@@ -13,13 +13,13 @@ import {customServerApi} from '../../utils/api.js'
 
 // Moved outside component to prevent unnecessary re-creation
 const analyzeProfileProgress = (profileData) => {
-  let progress = 45; // Starting progress
-  const fields = ['bio', 'skills', 'experience', 'number', 'designation', 'availability', 'languages', 'price'];
-  const fieldWeights = [7, 7, 7, 7, 7, 7, 5, 8];
+  let progress = 0;
+  const fields = ['name','email', 'profileImage', 'role', 'verified', 'bio', 'skill', 'experience', 'number', 'designation', 'isAvailable'];
+  const fieldWeights = 9;
   
-  fields.forEach((field, index) => {
-    if (profileData[field]) {
-      progress += fieldWeights[index];
+  fields.forEach((field) => {
+    if (profileData?.[field]) {
+      progress += fieldWeights;
     }
   });
 
@@ -28,7 +28,6 @@ const analyzeProfileProgress = (profileData) => {
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const [profileData, setProfileData] = useState(null);
   const [isNotificationActive, setIsNotificationActive] = useState(false);
   const [notificationData, setNotificationData] = useState([]);
   const userData = useSelector((state) => state.auth.userData);
@@ -37,24 +36,10 @@ const Sidebar = () => {
   const [unseenCount, setUnseenCount] = useState(0);
 
   const progressBarValue = useMemo(() => {
-    return profileData ? analyzeProfileProgress(profileData) : 45;
-  }, [profileData]);
+    return userData ? analyzeProfileProgress(userData) : 0;
+  }, [userData]);
 
-  const fetchUserProfileData = useCallback(async () => {
-    if (!userData?.profile) return;
-    try {
-      const response = await customServerApi.get(`/api/profile/${userData.profile}`);
-      if (response.data) {
-        setProfileData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching user profile data:", error);
-    }
-  }, [userData?.profile]);
 
-  useEffect(() => {
-    fetchUserProfileData();
-  }, [fetchUserProfileData]);
 
   useEffect(() => {
     const checkSessionAndLogout = () => {
@@ -180,15 +165,15 @@ const Sidebar = () => {
 
             <div className='my-6 border-b-2 border-gray-700 pb-8'>
               <div className='text-xl font-semibold flex items-center'>
-                <h2 className='mx-2'>{userData.name}</h2>
-                {userData.isVerified && (
-                  <div className='text-green-500'>
+                <h2 className='mr-2'>{userData.name}</h2>
+                <div className={`${userData?.verified ? "text-green-500" : "text-gray-500"} relative group cursor-pointer`}>
+                    <div className={`border group-hover:opacity-100 opacity-0  px-2 py-1 text-sm transition-all duration-700
+                    rounded-xl absolute top-[-35px] left-0 ${userData?.verified ? "w-fit" : "w-24"}`}>{userData?.verified ? "Verified" : "Not Verified"}</div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="Verified user">
                       <circle cx="12" cy="12" r="10"/>
                       <path d="m9 12 2 2 4-4"/>
                     </svg>
                   </div>
-                )}
               </div>
               <p className='text-gray-400'>{userData?.designation}</p>
             </div>
@@ -196,7 +181,7 @@ const Sidebar = () => {
             {progressBarValue < 100 && userData?.role === "worker" && (
               <div className="mt-6">
                 <div className="flex justify-between items-center mb-2">
-                  <Link to="/profile">
+                  <Link to={`/profile/${userData?._id}`}>
                     <span className="text-sm flex cursor-pointer">Profile Completion <MdOutlineChevronRight className='text-xl mt-[1.5px]' /></span>
                   </Link>
                   <span className="text-sm font-semibold">{progressBarValue}%</span>
@@ -224,7 +209,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link to={`/profile/${userData.id}`} className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
+                <Link to={`/profile/${userData._id}`} className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
                   <FaUser aria-hidden="true" />
                   <span>Profile</span>
                 </Link>
