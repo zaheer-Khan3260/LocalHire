@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import validator from 'validator';
 import { Notification } from "../model/notification.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
-import axios from "axios";
 
 export const createJob = async (req, res, next) => {
     try {
