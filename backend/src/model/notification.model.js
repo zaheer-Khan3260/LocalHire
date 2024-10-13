@@ -2,20 +2,13 @@
 import mongoose, { Schema } from "mongoose";
 
 const notificationSchema = new Schema({
-    jobId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Job",
-        required: true
-    },
-    clientName : {
+    senderName : {
         type: String,
-        required: true
     },
-    ClientProfileImage: {
+    senderProfileImage: {
         type: String,
-        required: true
     },
-    workerId: {
+    recieverId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },

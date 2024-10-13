@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import validator from 'validator';
 import { Notification } from "../model/notification.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
+import axios from "axios";
 
 export const createJob = async (req, res, next) => {
     try {
@@ -19,11 +20,13 @@ export const createJob = async (req, res, next) => {
             description,
             timing,
             workerId,
-            profileImage
+            workerName,
+            workerProfileImage,
+            clientProfileImage
         } = req.body;
 
         // Validation
-        if (!clientName || !clientEmail || !clientNumber || !status || !amount || !description || !timing || !workerId || !clientId) {
+        if (!clientName || !clientEmail || !status || !amount || !description || !timing || !workerId || !clientId) {
             throw new ApiError(400, 'All fields are required');
         }
 
@@ -33,10 +36,6 @@ export const createJob = async (req, res, next) => {
 
         if (!validator.isEmail(clientEmail)) {
             throw new ApiError(400, 'Invalid email format');
-        }
-
-        if (!validator.isNumeric(clientNumber.toString()) || parseInt(clientNumber) <= 0) {
-            throw new ApiError(400, 'Client number must be a positive number');
         }
 
         const validStatuses = ['Waiting For Approval', 'In Progress', 'Completed'];
@@ -72,17 +71,18 @@ export const createJob = async (req, res, next) => {
             description,
             timing,
             workerId,
-            profileImage
+            workerName,
+            workerProfileImage,
+            clientProfileImage
         });
 
         const savedJob = await newJob.save();
 
         // Create and save the notification
         const notification = new Notification({
-            jobId: savedJob._id,
-            clientName: savedJob.clientName,
-            ClientProfileImage: savedJob.profileImage,
-            workerId: savedJob.workerId,
+            senderName: clientName,
+            senderProfileImage: clientProfileImage,
+            recieverId: workerId,
             seen: false,
             notificationMessage: "Wants to hire you",
         });
@@ -189,18 +189,18 @@ export const updateJobStatus = asyncHandler(async (req, res) => {
 
 
 export const getNotification = asyncHandler(async(req, res) => {
-    const workerId = req.params.id;
+    const recieverId = req.params.id;
 
-    if (!workerId) {
+    if (!recieverId) {
         throw new ApiError(400, 'Worker ID is required');
     }
 
-    if (!mongoose.Types.ObjectId.isValid(workerId)) {
+    if (!mongoose.Types.ObjectId.isValid(recieverId)) {
         throw new ApiError(400, 'Invalid worker ID format');
     }
 
-    try {
-        const notifications = await Notification.find({ workerId });
+    try {  
+        const notifications = await Notification.find({ recieverId });
 
         if (!notifications) {
             return res.status(404).json({
@@ -217,5 +217,57 @@ export const getNotification = asyncHandler(async(req, res) => {
     } catch (error) {
         console.error("Error fetching notifications:", error);
         throw new ApiError(500, 'An error occurred while fetching notifications');
+    }
+});
+
+export const deleteJob = asyncHandler(async (req, res) => {
+    const jobId = req.params.id;
+
+    if (!jobId) {
+        throw new ApiError(400, 'Job ID is required');
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+        throw new ApiError(400, 'Invalid job ID format');
+    }
+
+    try {
+        const job = await Job.findById(jobId)
+
+        if (!job) {
+            return res.status(404).json({
+                success: false,
+                message: 'Job not found',
+            });
+        }
+        console.log("finded job in controller: ", job);
+        // Delete the job
+        await Job.findByIdAndDelete(job._id);
+
+        // Send notification to the client that the worker has rejected the job
+        const notification = new Notification({
+            senderName: job?.workerName,
+            senderProfileImage: job?.workerProfileImage,
+            recieverId: job?.clientId,
+            seen: false,
+            notificationMessage: "Reject Your Job"
+        });
+        await notification.save();
+
+        // Emit the notification to the client
+        const clientId = job.clientId;
+        const clientSocketId = await getReceiverSocketId(clientId);
+        if (clientSocketId) {
+            io.to(clientSocketId).emit('notification', notification);
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'Job deleted successfully',
+            data: job,
+        });
+    } catch (error) {
+        console.error("Error deleting job:", error);
+        throw new ApiError(500, 'An error occurred while deleting the job');
     }
 });

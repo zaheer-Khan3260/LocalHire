@@ -18,7 +18,6 @@ const jobSchema = new Schema({
     },
     clientNumber: {
         type: Number,
-        required: [true, 'Client number is required'],
         min: [1000000000, 'Client number must be at least 10 digits'], // Example validation for phone number
         max: [9999999999, 'Client number must be at most 10 digits'], // Example validation for phone number
     },
@@ -43,6 +42,10 @@ const jobSchema = new Schema({
         required: [true, 'Job description is required'],
         trim: true, // Remove whitespace
     },
+    workerName: {
+        type: String,
+        required: [true, 'workerName is reuired'],
+    },
     workerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Worker', // Assuming you have a Worker model
@@ -51,9 +54,13 @@ const jobSchema = new Schema({
         type: String,
         required: [true, "timing is required"]
     },
-    profileImage: {
+    clientProfileImage: {
         type: String,
         required: [true, "Profile image is required"]
+    },
+    workerProfileImage: {
+        type: String,
+        required: [true, "worker image is required"]
     }
 }, { timestamps: true });
 
