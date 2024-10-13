@@ -33,6 +33,13 @@ function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
     }
   };
 
+  const deleteJob = async() => {
+      const response = await customServerApi.get(`/job/deleteJob/${data?._id}`)
+      if(response) {
+        window.location.reload()
+      }
+  }
+
   if (isLoading) {
     return (
       <div className="animate-pulse w-[25rem]  bg-gray-600 bg-opacity-45 h-24 rounded-lg shadow-md"></div>
@@ -44,7 +51,7 @@ function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
       <div className="w-full border-slate-600 border-b-2 h-24 flex gap-2  ">
         <div className="w-20 h-20 rounded-full">
           <img
-            src={data?.profileImage ? data?.profileImage : defaultImage}
+            src={data?.clientProfileImage ? data?.clientProfileImage : defaultImage}
             alt=""
             className="w-20 h-20 rounded-full"
           />
@@ -100,8 +107,9 @@ function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
             className={`bg-red-500 mb-3 hover:bg-red-700 duration-300 transition-all rounded-md px-1 py-2 text-center ${
               data?.status === "Waiting For Approval" ? "block" : "hidden"
             }`}
+            onClick={deleteJob}
           >
-            {data?.status === "Waiting For Approval" ? "Reject" : "Done"}
+            Reject
           </h4>
           <h4
             onClick={() =>

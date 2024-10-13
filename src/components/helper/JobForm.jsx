@@ -23,14 +23,16 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
       const jobDetails = {
         clientName : userData?.name,
         clientEmail: userData?.email,
-        clientNumber: 8073904348,
+        clientNumber: userData?.number,
         clientId: userData.id,
         status: "Waiting For Approval",
         amount: data?.amount,
         description: data?.description,
         timing: data?.timing,
         workerId: _id,
-        profileImage: userData?.profileImage
+        workerName: name,
+        workerProfileImage: profileImage,
+        clientProfileImage: userData?.profileImage
       }
       console.log("jobdetails: ", jobDetails);
       const response = await customServerApi.post("/job/createJob", jobDetails)

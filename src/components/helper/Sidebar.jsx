@@ -212,7 +212,7 @@ const Sidebar = () => {
                   ></div>
                 </div>
               </div>
-            )}
+            ) }
           </div>
 
           <nav>
@@ -224,7 +224,7 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/profile" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
+                <Link to={`/profile/${userData.id}`} className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
                   <FaUser aria-hidden="true" />
                   <span>Profile</span>
                 </Link>

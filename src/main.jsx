@@ -12,7 +12,6 @@ import Login from './components/Auth/Login.jsx';
 import Signup from './components/Auth/Signup.jsx';
 import UserDashboard from './components/Dashboard/UserDashboard.jsx';
 import Profile from './components/Profile/Profile.jsx';
-import Robot from './components/Robot.jsx';
 import Messages from './components/messages/Messages.jsx';
 import MessageDisplay from './components/helper/MessageDisplay.jsx';
 import useFetchCurrentUserData from './hooks/useFetchCurrentUserData.js';
@@ -42,16 +41,12 @@ function AppRoutes() {
           element: user && user?.role === "worker" ? <WorkerDashboard /> : <UserDashboard/>
         },
         {
-          path: "/profile",
+          path: "/profile/:_id",
           element: (
             <ProtectedLayer>
               <Profile />
             </ProtectedLayer>
           ),
-        },
-        {
-          path: "/landing",
-          element: <Robot />,
         },
         {
           path: "/messages",

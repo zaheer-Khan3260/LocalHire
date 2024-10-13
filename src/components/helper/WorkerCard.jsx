@@ -1,8 +1,10 @@
 import React from "react";
 import { FaMapMarkerAlt, FaClock, FaTools, FaRupeeSign } from "react-icons/fa";
 import userImage from "../../Icons/profile.jpeg";
+import { Link } from "react-router-dom";
 
 const WorkerCard = ({
+  _id,
   name,
   location,
   profileImage,
@@ -102,9 +104,11 @@ const WorkerCard = ({
             >
               Hire Now
             </button>
+            <Link to={`/profile/${_id}`}>
             <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
               View Profile
             </button>
+            </Link>
           </div>
         </div>
       </div>
