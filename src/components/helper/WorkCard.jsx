@@ -1,7 +1,7 @@
 import React from "react";
 import defaultImage from "../../Icons/profile.jpeg";
 import { customServerApi } from "../../utils/api.js";
-
+import { Link } from "react-router-dom";
 function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
   const acceptJob = async () => {
     if (!data._id) return;
@@ -49,6 +49,7 @@ function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
     <div className="border-2 bg-[rgba(14,20,33,0.7)] border-[rgba(14,20,33,0.7)] shadow-xl transition-scale duration-300 hover:scale-105 w-[25rem] rounded-xl p-3">
       {/* Image and name container */}
       <div className="w-full border-slate-600 border-b-2 h-24 flex gap-2  ">
+        <Link to={`/profile/${data?.clientId}`}>
         <div className="w-20 h-20 rounded-full">
           <img
             src={data?.clientProfileImage ? data?.clientProfileImage : defaultImage}
@@ -56,6 +57,7 @@ function WorkCard({ data, onJobStatusUpdate, isLoading, onClick }) {
             className="w-20 h-20 rounded-full"
           />
         </div>
+        </Link>
         <div className="mt-1 ml-4">
           <h2 className="text-xl font-semibold">{data?.clientName}</h2>
           <p className="text-sm text-gray-600">{data?.clientNumber}</p>

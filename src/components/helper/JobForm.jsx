@@ -24,7 +24,7 @@ function JobForm({ _id, name, designation, profileImage, onClick }) {
         clientName : userData?.name,
         clientEmail: userData?.email,
         clientNumber: userData?.number,
-        clientId: userData.id,
+        clientId: userData?._id,
         status: "Waiting For Approval",
         amount: data?.amount,
         description: data?.description,

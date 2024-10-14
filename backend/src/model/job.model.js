@@ -17,7 +17,7 @@ const jobSchema = new Schema({
         match: [/.+@.+\..+/, 'Please enter a valid email address'], // Basic email validation
     },
     clientNumber: {
-        type: Number,
+        type: String,
         min: [1000000000, 'Client number must be at least 10 digits'], // Example validation for phone number
         max: [9999999999, 'Client number must be at most 10 digits'], // Example validation for phone number
     },

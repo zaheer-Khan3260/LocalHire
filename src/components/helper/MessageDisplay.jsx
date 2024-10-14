@@ -29,7 +29,7 @@ function MessageDisplay() {
 
   const sendMessage = async () => {
     const response = await customServerApi.post("/message/sendMessage", {
-      senderId: userData.id,
+      senderId: userData._id,
       recieverId: reciever,
       message: inputMessage
     })
@@ -44,7 +44,7 @@ function MessageDisplay() {
       const response = await customServerApi.post("/message/deleteMessage", {
         messageId,
         conversationId: id.id,
-        senderId: userData.id,
+        senderId: userData._id,
         receiverId: reciever
       });
       if (response.status === 200) {
@@ -65,7 +65,7 @@ function MessageDisplay() {
         setMessages(response.data.data.messages)
         console.log("message display respoinse: ", response.data.data)
         if(response.data.data.conversationBetween.length === 2) {
-          setReciever(response.data.data.conversationBetween.find((user) => user !== userData.id))
+          setReciever(response.data.data.conversationBetween.find((user) => user !== userData._id))
         }
       }
     }
@@ -194,7 +194,7 @@ function MessageDisplay() {
         </div>
         {
           messages.map((message, index) => (
-            message.senderId === userData.id ? (
+            message.senderId === userData._id ? (
               <div key={index} className="flex justify-end items-center mb-4 group"
               ref={index === messages.length - 1 ? lastMessageRef : null}
               >

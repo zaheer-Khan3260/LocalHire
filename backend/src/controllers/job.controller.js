@@ -172,7 +172,24 @@ export const updateJobStatus = asyncHandler(async (req, res) => {
                 message: 'Job not found',
             });
         }
+        const notificationMessage = status === "In Progress" ? `Accept Your Job, Message ${updatedJob.workerName} for more information`
+                                    : `${updatedJob.workerName} is completed your work.`
+        const notification = new Notification({
+            senderName: updatedJob.workerName,
+            senderProfileImage: updatedJob.workerProfileImage,
+            recieverId: updatedJob.clientId,
+            seen: false,
+            notificationMessage 
+        })
 
+        if(notification) {
+        const savedNotification = await notification.save()
+        
+            const receiverSocketId = getReceiverSocketId(updatedJob.clientId);
+            if(receiverSocketId){
+                io.to(receiverSocketId).emit("notification", savedNotification);
+            }  
+        }
         // Send the response back to the client
         return res.status(200).json({
             success: true,

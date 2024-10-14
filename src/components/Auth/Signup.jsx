@@ -24,7 +24,7 @@ export const uploadImage = async(formData) => {
 export const createUser = async(formattedData) => {
 
   try {
-    const response = await api.post("/api/user", formattedData);
+    const response = await api.post("/api/ai/user", formattedData);
 
       if (response.status === 201 && response.data) {
         console.log("Signup successful");

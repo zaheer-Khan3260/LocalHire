@@ -65,9 +65,9 @@ const Sidebar = () => {
 
   useEffect(() => {
     const fetchNotification = async () => {
-      if (!userData?.id) return;
+      if (!userData?._id) return;
       try {
-        const response = await customServerApi.get(`/job/getNotification/${userData.id}`);
+        const response = await customServerApi.get(`/job/getNotification/${userData._id}`);
         if (response.data) {
           const responseData = response.data.data;
           setNotificationData(prevNotifications => {
@@ -84,7 +84,14 @@ const Sidebar = () => {
     };
 
     fetchNotification();
-  }, [userData?.id]);
+  }, [userData]);
+
+  const updateSeenStatus = () => {
+    setNotificationData(prevNotifications => 
+      prevNotifications.map(notification => ({ ...notification, seen: true }))
+    );
+    setUnseenCount(0);
+  }
 
   useEffect(() => {
     if (!socket) return;
@@ -100,18 +107,14 @@ const Sidebar = () => {
     };
 
     socket.on("notification", handleNewNotification);
+    console.log("capture notification event");
+    setUnseenCount(prev => prev + 1);
 
     return () => {
       socket.off("notification", handleNewNotification);
     };
   }, [socket]);
 
-  const updateSeenStatus = () => {
-    setNotificationData(prevNotifications => 
-      prevNotifications.map(notification => ({ ...notification, seen: true }))
-    );
-    setUnseenCount(0);
-  }
 
   const handleLogout = () => {
     dispatch(logout());

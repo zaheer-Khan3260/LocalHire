@@ -13,7 +13,7 @@ function Messages() {
   useEffect(() => {
     console.log("user: ",user)
     const fetchUsers = async () => {
-      const response = await customServerApi.post(`/message/getConversation`, {senderId: user.id});
+      const response = await customServerApi.post(`/message/getConversation`, {senderId: user._id});
       if(response) {
         console.log("conversation response: ",response.data.data)
         setConversationUser(response.data.data);

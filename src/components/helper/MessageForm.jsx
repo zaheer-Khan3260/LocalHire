@@ -17,7 +17,7 @@ function MessageForm({
 
     const sendMessage = async() => {
         const response = await customServerApi.post("/message/sendMessage", {
-            senderId: userData?.id,
+            senderId: userData?._id,
             recieverId: _id,
             message: message
           })

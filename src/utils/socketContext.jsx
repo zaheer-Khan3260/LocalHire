@@ -20,7 +20,7 @@ export const SocketContextProvider = ({children}) => {
         if(userData) {
             const socket = io("http://localhost:3000", {
                 query: {
-                    userId: userData.id
+                    userId: userData._id
                 }
             });
 

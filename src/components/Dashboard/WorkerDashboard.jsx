@@ -53,7 +53,7 @@ const WorkColumn = ({ title, workCards, bgColor, borderColor, emptyMessage, onJo
             key={index} 
             data={card} 
             onJobStatusUpdate={onJobStatusUpdate} 
-            onClick={() => handleOnClick(card.clientId, card.clientName, card.profileImage )} 
+            onClick={() => handleOnClick(card.clientId, card.clientName, card.clientProfileImage )} 
             />
           ))
         ) : (
@@ -80,7 +80,7 @@ const WorkerDashboard = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       setIsLoading(true); // Set loading to true when fetching starts
-      const response = await customServerApi.get(`/job/fetchjobsByWorkerId/${userData?.id}`);
+      const response = await customServerApi.get(`/job/fetchjobsByWorkerId/${userData?._id}`);
       
       if (response && response.status === 200) {
         console.log("response: ", response.data.data);

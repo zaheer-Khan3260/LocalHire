@@ -12,7 +12,7 @@ function ConversationUser({ user }) {
   const dispatch = useDispatch();
   const { onlineUser } = useSocketContext();
   console.log("onlineUser: ", onlineUser)
-  const userId = useSelector((state) => state.auth.userData.id)
+  const userId = useSelector((state) => state.auth.userData._id)
 
   const handleNavigation = (id) => {
     dispatch(add(id));
