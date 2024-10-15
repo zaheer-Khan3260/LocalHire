@@ -165,10 +165,8 @@ export default function SignupPage() {
       <div className="relative z-10 flex items-center justify-center h-screen pointer-events-none">
         <div className="w-[80%] h-[82%] bg-gray-800 bg-opacity-80 rounded-xl shadow-lg flex pointer-events-auto">
           <div className="w-1/2 p-6 bg-purple-700 rounded-xl">
-            <h2 className="text-3xl font-bold mb-2">AMU</h2>
+            <h2 className="text-3xl font-bold mb-2">LocalHire</h2>
 
-            <img src="/api/placeholder/600/400" alt="Desert landscape" className="rounded-lg mb-4" />
-            <h3 className="text-2xl font-semibold mb-4">Capturing Moments,<br />Creating Memories</h3>
           </div>
           <div className="w-[calc(50%-15rem)] p-6 flex flex-col mx-auto">
             <p className="mb-6 text-end">Already have an account? 
@@ -290,7 +288,24 @@ export default function SignupPage() {
                         placeholder="Pin code"
                       />
                     </div>
-                    <div className="flex space-x-4">
+                      <div className="relative xl:w-[26rem]">
+                        <input
+                          type="checkbox"
+                          className="absolute top-[0.38rem] left-1"
+                          required
+                        />
+                        <h2 className="inline-block ml-6 font-semibold">
+                          Creating an account means you're okay with our{" "}
+                          <a href="#" className="text-blue-600">
+                            Terms of Service, Privacy Policy,
+                          </a>
+                          and default{" "}
+                          <a href="#" className="text-blue-600">
+                            Notification Setting
+                          </a>
+                        </h2>
+                      </div>
+                    <div className="flex space-x-4 mt-4">
                       <button type="button" onClick={prevSlide} className="w-1/2 bg-gray-600 p-2 rounded-xl hover:bg-gray-700 transition">Previous</button>
                       <button 
                         type="submit" 

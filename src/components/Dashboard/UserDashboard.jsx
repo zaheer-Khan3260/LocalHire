@@ -63,7 +63,6 @@ function UserDashboard() {
     fetchWorkers();
   }, []);
 
-console.log("clicker user data : ", clickedUserData)
   return (
     <div className='w-full h-[calc(100vh-4.5rem)] px-4 pt-9'>
       <div className={`w-[89rem] z-50 absolute bottom-0 right-0 h-[52rem] bg-primaryCardColor backdrop-blur-lg

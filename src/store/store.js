@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice";
-import { saveState, loadState } from "../utils/cookieStorage.js"; // Ensure the path is correct
 import conversationSlice from "./ConversationSlice.js";
-// Load the state from cookies
-const preloadedState = loadState();
+import { saveStateToLocalStorage, loadStateFromLocalStorage} from "../utils/cookieStorage.js"
+
+// Load the state from cookies or localStorage
+const preloadedState = loadStateFromLocalStorage() || {}; // Use an empty object if no state is found
 
 const store = configureStore({
     reducer: {
@@ -15,7 +16,12 @@ const store = configureStore({
 
 // Save the state to cookies before the page unloads
 window.addEventListener("beforeunload", () => {
-    saveState(store.getState());
+    saveStateToLocalStorage(store.getState());
+});
+
+// Subscribe to store updates to save state on every change
+store.subscribe(() => {
+    saveStateToLocalStorage(store.getState());
 });
 
 export { store };

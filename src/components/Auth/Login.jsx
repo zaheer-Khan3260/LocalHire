@@ -28,6 +28,7 @@ function Login() {
       dispatch(logout())
     }
   }, [currentUser, navigate])
+ console.log("current user: ", currentUser);
  
   const onSubmit = async(data) => {
     try {
@@ -47,7 +48,9 @@ function Login() {
         const userData = {
           ...Object.fromEntries(Object.entries(response.data).filter(([key]) => !['password'].includes(key)))
         }
-
+        console.log("userData in login: ", userData)
+        const currentDate = new Date();
+        localStorage.setItem('lastLoginDate', currentDate.toISOString());
         dispatch(login(userData));
         navigate('/');
       } else {

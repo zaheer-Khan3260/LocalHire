@@ -49,19 +49,21 @@ const Sidebar = () => {
       if (storedDate) {
         const storedDateTime = new Date(storedDate);
         
-        if (currentDate - storedDateTime > 24 * 60 * 60 * 1000) {
+        if (currentDate - storedDateTime > 24 * 60 * 60 * 1000) { // Converted to milliseconds
+          console.log("Session expired, logging out...");
+          localStorage.removeItem('reduxState'); 
+          localStorage.removeItem('lastLoginDate');
           dispatch(logout());
           navigate('/login');
         }
       }
 
-      localStorage.setItem('lastLoginDate', currentDate.toISOString());
     };
     
     checkSessionAndLogout();
     const intervalId = setInterval(checkSessionAndLogout, 3600000);
     return () => clearInterval(intervalId);
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, userData]);
 
   useEffect(() => {
     const fetchNotification = async () => {
@@ -225,7 +227,7 @@ const Sidebar = () => {
               </li>
               <li>
                 {userData?.role === "user" && (
-                  <Link to="/post-job" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
+                  <Link to="/workers" className="flex items-center space-x-3 p-3 hover:bg-blue-500 hover:scale-105 transition-all duration-400 rounded-xl">
                     <GrUserWorker aria-hidden="true" />
                     <span>Workers</span>
                   </Link>

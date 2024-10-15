@@ -16,6 +16,7 @@ import Messages from './components/messages/Messages.jsx';
 import MessageDisplay from './components/helper/MessageDisplay.jsx';
 import useFetchCurrentUserData from './hooks/useFetchCurrentUserData.js';
 import WorkerDashboard from './components/Dashboard/WorkerDashboard.jsx';
+import Workers from './components/helper/Workers.jsx';
 
 // Create a wrapper component to handle fetching user data and routing logic
 function AppRoutes() {
@@ -45,6 +46,14 @@ function AppRoutes() {
           element: (
             <ProtectedLayer>
               <Profile />
+            </ProtectedLayer>
+          ),
+        },
+        {
+          path: "/workers",
+          element: (
+            <ProtectedLayer>
+              <Workers />
             </ProtectedLayer>
           ),
         },
